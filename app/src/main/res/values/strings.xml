@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Metronome</string>
+    <string name="tap_to_set_tempo">Tap to set tempo</string>
+    <string name="tempo_disp">%1$d BPM</string>
+</resources>
