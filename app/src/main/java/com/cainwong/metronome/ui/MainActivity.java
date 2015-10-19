@@ -1,5 +1,6 @@
 package com.cainwong.metronome.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.cainwong.metronome.rx.FilterTimeIntervalWindow;
 import com.cainwong.metronome.rx.MapMillisToBpm;
 import com.cainwong.metronome.rx.MapRoundFloatToInt;
 import com.cainwong.metronome.rx.MapRoundToValue;
+import com.cainwong.metronome.services.AudioService;
 import com.jakewharton.rxbinding.view.RxView;
 
 import javax.inject.Inject;
@@ -26,8 +28,6 @@ import rx.functions.Func1;
 import rx.schedulers.TimeInterval;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String TAG = MainActivity.class.getSimpleName();
 
     public static final long MIN_DELAY = 215;
     public static final long MAX_DELAY = 3000;
@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
                     public void call(Boolean aBoolean) {
                         fab.setImageResource(aBoolean ? R.drawable.ic_stop_white_18dp
                                 : R.drawable.ic_play_arrow_white_18dp);
+                        if(aBoolean){
+                            startService(new Intent(getApplicationContext(), AudioService.class));
+                        } else {
+                            stopService(new Intent(getApplicationContext(), AudioService.class));
+                        }
                     }
                 });
 
