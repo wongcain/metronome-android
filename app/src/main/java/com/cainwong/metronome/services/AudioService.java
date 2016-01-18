@@ -35,7 +35,7 @@ public class AudioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(beatSubscription==null || beatSubscription.isUnsubscribed()){
+        if (beatSubscription == null || beatSubscription.isUnsubscribed()) {
             beatSubscription = metronome.getBeatObservable().subscribe(new Action1<Integer>() {
                 @Override
                 public void call(Integer beat) {
@@ -48,7 +48,7 @@ public class AudioService extends Service {
 
     @Override
     public void onDestroy() {
-        if(beatSubscription!=null && !beatSubscription.isUnsubscribed()){
+        if (beatSubscription != null && !beatSubscription.isUnsubscribed()) {
             beatSubscription.unsubscribe();
         }
         super.onDestroy();

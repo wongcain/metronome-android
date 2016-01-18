@@ -1,0 +1,40 @@
+apply plugin: 'jacoco'
+
+afterEvaluate { project ->
+
+    project.android.buildTypes.each { type ->
+
+        task "jacoco${type.name.capitalize()}TestReport"(type: JacocoReport, dependsOn: "test${type.name.capitalize()}UnitTest") {
+
+            reports {
+                xml.enabled = true
+                html.enabled = true
+            }
+
+            jacocoClasspath = configurations['androidJacocoAnt']
+
+            def fileFilter = ['**/Dagger*.class',
+                              '**/R.class',
+                              '**/R$*.class',
+                              '**/BuildConfig.*',
+                              '**/Manifest*.*',
+                              '**/*Test*.*',
+                              'android/**/*.*',
+                              '**/*$ViewBinder.*',
+                              '**/*_MembersInjector*.*',
+                              '**/*_Factory*.*',
+                              '**/*_Provide*.*']
+            def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/${type.name}", excludes: fileFilter)
+            def mainSrc = "${project.projectDir}/src/main/java"
+
+            sourceDirectories = files([mainSrc])
+            classDirectories = files([debugTree])
+            executionData = files("${buildDir}/jacoco/test${type.name.capitalize()}UnitTest.exec")
+        }
+
+    }
+
+    task jacocoTestReport(dependsOn: project.android.buildTypes.collect {
+        "jacoco${it.name.capitalize()}TestReport"
+    })
+}
