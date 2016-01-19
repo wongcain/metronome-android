@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         RxView.clicks(tempoView)
                 .timeInterval(intervalScheduler)
                 .filter(new FilterTimeIntervalWindow(MIN_DELAY, MAX_DELAY))
-                .subscribe(new Action1<TimeInterval<Object>>() {
+                .subscribe(new Action1<TimeInterval<Void>>() {
                     @Override
-                    public void call(TimeInterval<Object> timeInterval) {
+                    public void call(TimeInterval<Void> timeInterval) {
                         metronome.setDelay((int) (timeInterval.getIntervalInMilliseconds()));
                     }
                 });
